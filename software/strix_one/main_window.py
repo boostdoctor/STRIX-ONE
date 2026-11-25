@@ -272,6 +272,8 @@ class MainWindow(QMainWindow):
         row.addStretch(1)
         bl.addLayout(row)
         self.map_boost = MapView("Boost", is_ign=False, rows=8, cols=8,
+                                  kind="boost", vmax=250)
+
         cl = (self.engine.get("boost_mode") or "Closed-loop") != "Open-loop"
         self.map_boost.set_table(suggested_boost_map(8, 8, closed_loop=cl))
         self.map_boost.vmax = 250.0 if cl else 100.0
