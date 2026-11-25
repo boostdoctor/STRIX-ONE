@@ -101,12 +101,20 @@ python -m strix_one.main_window
 
 
 
-## Firmware Status
+## CubeIDE Firmware
 
-- Single cylinder Alpha-N + VE
-- Trigger gap detection (basic)
-- Injection and ignition outputs on specified pins
-- Serial status streaming
+Verified CubeIDE-compatible firmware is in `cubeide/`.
+
+See `cubeide/README.md` for the full requirements checklist and setup instructions.
+
+All original requirements are met:
+- STM32F411
+- Single cylinder Alpha-N
+- TPS as load, MAP as baro
+- VE only
+- Triggers: 12-1 (default), Single Tooth, 36-1, 24-1/24-2
+- Ignition PB0, Injector PB15
+
 
 
 ## License
