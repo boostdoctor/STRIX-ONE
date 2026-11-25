@@ -300,7 +300,8 @@ class SensorCalDialog(QDialog):
 class EngineSettingsDialog(QDialog):
     """V1 engine options + V2 fuel/prime/hybrid — tabbed."""
 
-    WHEELS = [(wid, name) for wid, name, _t, _m in WHEEL_PROFILES]
+    WHEELS = [(wid, name) for wid, name, *_rest in WHEEL_PROFILES]
+
     FIRE_ORDERS = list(ALL_FIRING_ORDERS)
 
     def __init__(self, settings: dict, rpm: int = 0, parent=None):
