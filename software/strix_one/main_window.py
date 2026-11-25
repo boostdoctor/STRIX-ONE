@@ -272,8 +272,6 @@ class MainWindow(QMainWindow):
         row.addStretch(1)
         bl.addLayout(row)
         self.map_boost = MapView("Boost", is_ign=False, rows=8, cols=8,
-                                 kind="boost", vmax=250, rpm_bins=vvt_rpm)
-        self.map_boost.set_load_bins(vvt_load, "TPS")
         cl = (self.engine.get("boost_mode") or "Closed-loop") != "Open-loop"
         self.map_boost.set_table(suggested_boost_map(8, 8, closed_loop=cl))
         self.map_boost.vmax = 250.0 if cl else 100.0
@@ -448,12 +446,9 @@ class MainWindow(QMainWindow):
     def _update_feature_tabs(self):
         bm = self.engine.get("boost_mode") or "OFF"
         show_boost = bm not in ("OFF", "", None)
-        vm = self.engine.get("vvt_mode") or "Disabled"
-        show_vvt = vm not in ("Disabled", "", None)
         o2 = (self.engine.get("o2_mode") or "Disabled")
         show_afr = o2 == "Wideband"
         pairs = [
-            (self._vvt_tab_idx, show_vvt),
             (self._boost_tab_idx, show_boost),
         ]
         if hasattr(self, "_afr_tab_idx"):
@@ -1039,10 +1034,6 @@ class MainWindow(QMainWindow):
             self.map3d.set_table(self.map_inj.table, "Fuel 3D", **axes(self.map_inj, z))
         elif idx == 2 and hasattr(self, "map_boost"):
             self.map3d.set_table(self.map_boost.table, "Boost 3D", **axes(self.map_boost, "BOOST"))
-        elif idx == 3 and hasattr(self, "map_vvt_in"):
-            self.map3d.set_table(self.map_vvt_in.table, "VVT In 3D", **axes(self.map_vvt_in, "VVT °"))
-        elif idx == 4 and hasattr(self, "map_vvt_ex"):
-            self.map3d.set_table(self.map_vvt_ex.table, "VVT Ex 3D", **axes(self.map_vvt_ex, "VVT °"))
 
     def _update_dirty_status(self):
         n = len(self.map_ign.dirty) + len(self.map_inj.dirty)
@@ -1461,10 +1452,6 @@ class MainWindow(QMainWindow):
             self._cell_tx(1, r, c, v)
         elif idx == 2 and hasattr(self, "map_boost"):
             self.map_boost.table[r][c] = float(v)
-        elif idx == 3 and hasattr(self, "map_vvt_in"):
-            self.map_vvt_in.table[r][c] = float(v)
-        elif idx == 4 and hasattr(self, "map_vvt_ex"):
-            self.map_vvt_ex.table[r][c] = float(v)
         self._refresh_3d()
 
     def _export_pack(self):
