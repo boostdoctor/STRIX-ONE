@@ -463,18 +463,12 @@ class EngineSettingsDialog(QDialog):
         form.addRow("Ignition mode", self.ign_mode)
 
         self.inj_mode_cb = QComboBox()
-        self.inj_mode_cb.addItems(["Batch", "Sequential"])
-        jm = settings.get("inj_mode") or "Batch"
-        if str(jm).startswith("Seq"):
-            jm = "Sequential"
-        else:
-            jm = "Batch"
-        if int(settings.get("cylinders") or 4) in (5, 6, 8):
-            jm = "Batch"
-        self.inj_mode_cb.setCurrentText(jm)
-        self.inj_mode_cb.setEnabled(not locked)
-        self.inj_mode_cb.setToolTip("Batch = split-bank 360°. Sequential = one injector / 720° (needs Cam home).")
+        self.inj_mode_cb.addItems(["Batch"])  # STRIX ONE: always batch
+        self.inj_mode_cb.setCurrentText("Batch")
+        self.inj_mode_cb.setEnabled(False)
+        self.inj_mode_cb.setToolTip("STRIX ONE is single-cylinder — batch injection only.")
         form.addRow("Injection mode", self.inj_mode_cb)
+
 
         def _sync_seq_enable():
             seq_ok = bool(self.cam_home.isChecked())
