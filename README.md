@@ -80,18 +80,50 @@ https://github.com/boostdoctor/STRIX-ONE.git
 
 ## Python Tuning Software
 
-Located in `software/strix_one_tuner.py`.
+Exact layout matching TorquEFI STRIX (`STRIX_V2_py/strix_v2`), adapted for single-cylinder Alpha-N.
+
+Location: `software/strix_one/`
+
+```
+strix_one/
+├── __init__.py
+├── constants.py          # Alpha-N / TPS bins, trigger modes
+├── datalog.py
+├── device_id.py
+├── inc_lookup.py
+├── main_window.py        # PySide6 main window (same structure)
+├── protocol.py           # Status parsing for Alpha-N firmware
+├── serial_worker.py
+├── tcal.py
+├── dashboards/
+│   ├── dyno.json
+│   └── street.json
+├── lookups/
+│   └── AEMWB.inc
+└── widgets/
+    ├── live_strip.py
+    ├── map_view.py
+    └── ... (stubs for remaining original widgets)
+```
+
+### Run
 
 ```bash
 pip install -r software/requirements.txt
-python software/strix_one_tuner.py
+python -m strix_one.main_window
+# or
+cd software && python -m strix_one.main_window
 ```
 
-Features:
-- Live gauges (RPM, TPS, Baro, CLT, IAT, Sync)
-- Trigger mode selection (12-1, Single Tooth, 36-1, 24-1, 24-2)
-- VE table viewer
-- Serial protocol matching the firmware
+Features retained from original layout:
+- Live strip gauges
+- Map view tabs (VE + Ignition, Alpha-N TPS×RPM)
+- Trigger selection
+- Serial worker + protocol
+- Dark theme
+
+Simplified for single cylinder: no multi-cylinder trim, no boost/VVT/idle maps, MAP input treated as barometric only.
+
 
 ## Firmware Status
 
