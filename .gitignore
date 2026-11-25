@@ -1,0 +1,22 @@
+# Build artifacts
+.pio
+.pioenvs
+.piolibdeps
+*.elf
+*.bin
+*.hex
+*.map
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firmware binaries
+firmware.bin
+firmware.elf
