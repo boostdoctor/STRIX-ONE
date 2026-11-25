@@ -1572,3 +1572,16 @@ class MainWindow(QMainWindow):
             "Ctrl+S — flash · F1 — help\n"
             "3D: Shift+click cell · wheel nudge · double-click edit",
         )
+
+
+def main():
+    import sys
+    from PySide6.QtWidgets import QApplication
+    app = QApplication(sys.argv)
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

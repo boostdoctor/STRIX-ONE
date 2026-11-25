@@ -96,8 +96,13 @@ https://github.com/boostdoctor/STRIX-ONE.git
 ```bash
 pip install -r software/requirements.txt
 cd software
+python strix_one_tuner.py
+# or
 python -m strix_one.main_window
 ```
+
+`strix_one_tuner.py` now launches the full PySide6 interface (no more Tkinter shell).
+
 
 
 
