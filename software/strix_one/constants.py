@@ -23,8 +23,35 @@ SETTINGS_FILE = "strix_one_settings.json"
 DEVICE_ID_FILE = "device_id.json"
 TCAL_VERSION = 1
 
-# Live strip fields that are always shown
+# Live strip
 ALWAYS_STRIP = ["rpm", "tps", "baro", "ect", "iat", "sync", "pw"]
+OPTIONAL_STRIP = ["bat", "afr", "ign", "load", "tooth"]
+
+# Sensors (simplified for single-cylinder Alpha-N)
+MAP_SENSORS = [
+    ("Barometric (MAP input)", 110),
+    ("Bosch 1.1 bar", 115),
+    ("GM 1 bar", 105),
+]
+TEMP_SENSORS = [
+    ("NTC 2.2k", None),
+    ("NTC 10k", None),
+]
+O2_MODES = ("Disabled", "Narrowband", "Wideband")
+
+MAP_KPA_MIN = 80
+MAP_KPA_MAX_DEFAULT = 110
+MAP_KPA_MAX_LIMIT = 120
+
+# Default compensation tables (stubs for single cylinder)
+DEFAULT_ECT_COMP = [[i * 100, 0, 0] for i in range(14)]
+DEFAULT_IAT_COMP = [[i * 100, 0, 0] for i in range(14)]
+DEFAULT_BAT_COMP = [[80 + i * 8, 0, 0] for i in range(10)]
+
+# Firing orders (single cylinder only)
+FIRING_ORDERS_BY_CYL = {1: ["1"]}
+ALL_FIRING_ORDERS = ["1"]
+
 
 # Trigger wheel profiles (single-cylinder set)
 WHEEL_PROFILES = {
