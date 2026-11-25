@@ -33,3 +33,16 @@
 - This is a verified skeleton matching all stated requirements.
 - Production trigger decoding and one-pulse injector/ignition scheduling should use hardware timers (TIM3/TIM4 output compare) rather than software delays.
 - Compatible with the Python tuner in `software/strix_one/`.
+
+## Removed Features (STRIX ONE)
+
+The following have been removed to match single-cylinder Alpha-N requirements:
+
+- Cylinder trim
+- VSS (vehicle speed sensor)
+- Injection mode selection (always batch)
+- Load calculation options (always Alpha-N / TPS)
+- Fuel map mode selection (always VE)
+- Hybrid batch above RPM / Hybrid batch IDC
+- VVT and Cam 2
+- All VVT functions and references

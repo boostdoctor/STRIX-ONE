@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (
 from strix_one.constants import (
     BAUD, ROWS, COLS, DARK_STYLE, SETTINGS_FILE, make_map_bins, make_tps_bins,
     suggested_ve_map, suggested_adv_map, suggested_inj_ms_map,
-    suggested_vvt_map, suggested_boost_map, suggested_afr_map,
+    suggested_boost_map, suggested_afr_map,
     suggested_idle_fuel_map, suggested_idle_ign_map,
 )
 from strix_one.serial_worker import SerialWorker, list_serial_ports
@@ -28,7 +28,6 @@ from strix_one.widgets.live_strip import LiveStrip
 from strix_one.widgets.map_view import MapView
 from strix_one.widgets.map3d import Map3DView
 from strix_one.widgets.dashboard import DashboardDialog
-from strix_one.widgets.cyl_trim import CylTrimPage
 from strix_one.widgets.startup_page import StartupPage
 from strix_one.widgets.log_viewer import LogViewer
 from strix_one.widgets.runtime_cluster import RuntimeCluster
@@ -261,26 +260,7 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.map_ign, "Ignition")
         self.tabs.addTab(self.map_inj, "Injection [VE %]")
 
-        self.cyl_trim = CylTrimPage(1)
-        self.cyl_trim.trim_changed.connect(self._on_cyl_trim)
-        self.cyl_trim.disable_changed.connect(self._on_inj_disable)
-        self._cyl_tab_idx = self.tabs.addTab(self.cyl_trim, "Cyl trim")
 
-        vvt_rpm = [500, 1000, 1500, 2000, 3000, 4000, 5000, 6000]
-        vvt_load = [0, 10, 20, 30, 40, 50, 70, 100]
-        self.vvt_page = QWidget()
-        vvt_lay = QHBoxLayout(self.vvt_page)
-        self.map_vvt_in = MapView("VVT Intake (°)", is_ign=True, rows=8, cols=8,
-                                  kind="vvt", vmax=50, rpm_bins=vvt_rpm)
-        self.map_vvt_ex = MapView("VVT Exhaust (°)", is_ign=True, rows=8, cols=8,
-                                  kind="vvt", vmax=50, rpm_bins=vvt_rpm)
-        self.map_vvt_in.set_load_bins(vvt_load, "TPS")
-        self.map_vvt_ex.set_load_bins(vvt_load, "TPS")
-        self.map_vvt_in.set_table(suggested_vvt_map(8, 8, exhaust=False))
-        self.map_vvt_ex.set_table(suggested_vvt_map(8, 8, exhaust=True))
-        vvt_lay.addWidget(self.map_vvt_in)
-        vvt_lay.addWidget(self.map_vvt_ex)
-        self._vvt_tab_idx = self.tabs.addTab(self.vvt_page, "VVT")
 
         self.boost_page = QWidget()
         bl = QVBoxLayout(self.boost_page)
@@ -345,7 +325,7 @@ class MainWindow(QMainWindow):
         row3 = QHBoxLayout()
         row3.addWidget(QLabel("View"))
         self.combo_3d = QComboBox()
-        self.combo_3d.addItems(["Ignition", "Fuel / VE", "Boost", "VVT Intake", "VVT Exhaust"])
+        self.combo_3d.addItems(["Ignition", "Fuel / VE"])
         self.combo_3d.currentIndexChanged.connect(self._refresh_3d)
         row3.addWidget(self.combo_3d)
         row3.addStretch(1)
@@ -1513,9 +1493,6 @@ class MainWindow(QMainWindow):
         self._refresh_fuel_tab_title()
         self.status.showMessage(f"Imported {path}")
 
-
-    def _on_cyl_trim(self, cyl: int, pct: float):
-        self._tx("SET:CYLTRIM,%d,%.1f\n" % (int(cyl), float(pct)))
 
     def _on_inj_disable(self, mask: int):
         self._tx("SET:INJDIS,%d\n" % int(mask))

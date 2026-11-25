@@ -462,15 +462,10 @@ class EngineSettingsDialog(QDialog):
         self.ign_mode.setToolTip("Sequential ignition needs Cam home. Otherwise wasted spark (360°).")
         form.addRow("Ignition mode", self.ign_mode)
 
-        self.inj_mode_cb = QComboBox()
-        self.inj_mode_cb.addItems(["Batch"])  # STRIX ONE: always batch
-        self.inj_mode_cb.setCurrentText("Batch")
-        self.inj_mode_cb.setEnabled(False)
-        self.inj_mode_cb.setToolTip("STRIX ONE is single-cylinder — batch injection only.")
-        form.addRow("Injection mode", self.inj_mode_cb)
-
+        # Injection mode removed — always batch for single cylinder
 
         def _sync_seq_enable():
+
             seq_ok = bool(self.cam_home.isChecked())
             high_cyl = False
             try:
@@ -519,19 +514,8 @@ class EngineSettingsDialog(QDialog):
         fl = QVBoxLayout(fuel_inner)
         fl.setSpacing(12)
         fl.setContentsMargins(12, 12, 12, 12)
-        load_grp = QGroupBox("Load calculation"); load_form = QFormLayout(load_grp)
-        self.load_mode = QComboBox(); self.load_mode.addItems(["MAP", "TPS", "HYBRID"])
-        lm = (settings.get("load_mode") or "MAP").upper()
-        if lm in ("ALPHA-N", "ALPHA_N"):
-            lm = "TPS"
-        if lm not in ("MAP", "TPS", "HYBRID"):
-            lm = "MAP"
-        self.load_mode.setCurrentText(lm)
-        self.load_mode.setEnabled(not locked)
-        self.map_kpa_max = _spin(100, 500, settings.get("map_kpa_max") or 240, " kPa")
-        load_form.addRow("Load axis", self.load_mode)
-        load_form.addRow("MAP scale max", self.map_kpa_max)
-        fl.addWidget(load_grp)
+        # STRIX ONE: Alpha-N only — load calculation removed
+        # Load is always TPS
 
         # Priming moved to Startup tab
 
@@ -541,20 +525,10 @@ class EngineSettingsDialog(QDialog):
         inj_form.setHorizontalSpacing(16)
         inj_form.setVerticalSpacing(10)
         inj_form.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
-        # Fuel map mode: VE % vs raw injector duty (ms)
-        self.fuel_mode = QComboBox()
-        self.fuel_mode.addItems(["VE", "Injector Duty"])
-        self.fuel_mode.setToolTip(
-            "VE: map cells are volumetric efficiency % (scaled by req fuel / flow / density).\n"
-            "Injector Duty: map cells are injector pulse width in ms directly."
-        )
-        if bool(settings.get("ve_mode", True)):
-            self.fuel_mode.setCurrentText("VE")
-        else:
-            self.fuel_mode.setCurrentText("Injector Duty")
-        inj_form.addRow("Fuel map mode", self.fuel_mode)
+        # Fuel map mode removed — always VE
 
         self.inj_flow = QDoubleSpinBox()
+
         self.inj_flow.setMinimumWidth(140)
         self.inj_flow.setRange(50.0, 3000.0)
         self.inj_flow.setDecimals(0)
@@ -621,19 +595,8 @@ class EngineSettingsDialog(QDialog):
             "Injector deadtime at 13.2 V (pintle open delay).\n"
             "Added to every pulse. Scales as 13.2/Vbat at other voltages.")
         inj_form.addRow("Injector deadtime", self.inj_dead)
-        self.hybrid_rpm = QSpinBox()
-        self.hybrid_rpm.setRange(500, 12000)
-        self.hybrid_rpm.setSingleStep(100)
-        self.hybrid_rpm.setSuffix(" RPM")
-        self.hybrid_rpm.setValue(int(settings.get("batch_above_rpm") or 6500))
-        self.hybrid_rpm.setToolTip("Sequential below this RPM (if IDC also below limit).")
-        inj_form.addRow("Hybrid batch above", self.hybrid_rpm)
-        self.hybrid_duty = QSpinBox()
-        self.hybrid_duty.setRange(40, 95)
-        self.hybrid_duty.setSuffix(" %")
-        self.hybrid_duty.setValue(int(settings.get("batch_duty_pct") or 75))
-        self.hybrid_duty.setToolTip("Switch to 360° half-PW batch at this injector duty.")
-        inj_form.addRow("Hybrid batch IDC", self.hybrid_duty)
+        # Hybrid batch removed for STRIX ONE (always batch)
+
 
         def _fuel_mode_fields(mode: str):
             ve_on = (mode == "VE")
@@ -812,22 +775,9 @@ class EngineSettingsDialog(QDialog):
             elif self.boost_mode.currentText() == "OFF":
                 self.boost_mode.setCurrentText("Closed-loop")
         self.boost_en.toggled.connect(_boost_toggled)
-        iof.addRow("VVT", self.vvt_mode)
-        self.cam1_vvt = QCheckBox("Cam 1 sensor (intake VVT closed-loop)")
-        self.cam2_vvt = QCheckBox("Cam 2 sensor (exhaust VVT closed-loop)")
-        self.cam1_vvt.setChecked(bool(settings.get("cam1_vvt_cl", True)))
-        self.cam2_vvt.setChecked(bool(settings.get("cam2_vvt_cl", False)))
-        def _vvt_changed(s):
-            self.cam1_vvt.setEnabled(s in ("Intake", "Intake & Exhaust"))
-            self.cam2_vvt.setEnabled(s in ("Exhaust", "Intake & Exhaust"))
-            if s == "Disabled":
-                self.cam1_vvt.setChecked(False)
-                self.cam2_vvt.setChecked(False)
-        self.vvt_mode.currentTextChanged.connect(_vvt_changed)
-        _vvt_changed(self.vvt_mode.currentText())
-        iof.addRow(self.cam1_vvt)
-        iof.addRow(self.cam2_vvt)
+        # VVT and Cam 2 removed for STRIX ONE
         iof.addRow(self.fan_en)
+
         
         iof.addRow("Fan on temperature", self.fan)
         self.tacho_en = QCheckBox("Tachometer output (PC14 spare)")
@@ -1573,17 +1523,10 @@ class MotorsportDialog(QDialog):
         _lc_decay_fields(self.lc_decay.isChecked())
         tabs.addTab(w, "Launch")
 
-        # VSS
-        w = QWidget(); f = QFormLayout(w)
-        self.vss_en = QCheckBox("Vehicle speed sensor enable (PC15)")
-        self.vss_en.setChecked(bool(settings.get("vss_enable", False)))
-        self.vss_ppk = spin(100, 50000, settings.get("vss_pulses_per_km") or 8000, " p/km")
-        f.addRow(self.vss_en)
-        f.addRow("Pulses per km", self.vss_ppk)
-        f.addRow(QLabel("Hall/VR (conditioned) on PC15, 3.3 V max. Required for launch decay."))
-        tabs.addTab(w, "VSS")
+        # VSS removed for STRIX ONE
 
         # ALS
+
         w = QWidget(); f = QFormLayout(w)
         self.als_en = QCheckBox("Anti-lag enable")
         self.als_en.setChecked(bool(settings.get("als_enable", False)))
