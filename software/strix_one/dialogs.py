@@ -596,18 +596,10 @@ class EngineSettingsDialog(QDialog):
             "Added to every pulse. Scales as 13.2/Vbat at other voltages.")
         inj_form.addRow("Injector deadtime", self.inj_dead)
         # Hybrid batch removed for STRIX ONE (always batch)
-
-
-        def _fuel_mode_fields(mode: str):
-            ve_on = (mode == "VE")
-            self.ve_mode_cb.setChecked(ve_on)
-            # Injector Duty: grey all injection settings except Max Injection
-            for w in (self.inj_flow, self.fuel_press, self.fuel_press_rated, self.req_fuel):
-                w.setEnabled(ve_on)
-        self.fuel_mode.currentTextChanged.connect(_fuel_mode_fields)
-        _fuel_mode_fields(self.fuel_mode.currentText())
+        # Fuel map mode removed — always VE
 
         fl.addWidget(inj_grp)
+
         self._fuel_fl = fl
         fl.addStretch(1)
         fuel = QScrollArea()
