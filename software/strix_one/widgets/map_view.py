@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, Signal, QRectF
 from PySide6.QtGui import QColor, QFont, QPen, QPainter, QFontMetrics, QKeySequence
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QInputDialog, QSizePolicy, QCheckBox
 
-from strix_v2.constants import ROWS, COLS, RPM_BINS
+from strix_one.constants import ROWS, COLS, RPM_BINS
 
 
 def _heat(v: float, vmax: float, kind: str = "ign") -> QColor:

@@ -9,13 +9,13 @@ from PySide6.QtWidgets import (
     QDialogButtonBox, QListWidget, QSlider, QScrollArea, QHeaderView,
 )
 
-from strix_v2.constants import (
+from strix_one.constants import (
     OPTIONAL_STRIP, MAP_SENSORS, TEMP_SENSORS, O2_MODES,
     MAP_KPA_MAX_LIMIT, MAP_KPA_MIN, make_map_bins, WHEEL_PROFILES,
     FIRING_ORDERS_BY_CYL, ALL_FIRING_ORDERS,
     DEFAULT_ECT_COMP, DEFAULT_IAT_COMP, DEFAULT_BAT_COMP,
 )
-from strix_v2.tcal import default_engine_settings, save_tcal, load_tcal
+from strix_one.tcal import default_engine_settings, save_tcal, load_tcal
 
 
 class ProgramSettingsDialog(QDialog):
@@ -364,7 +364,7 @@ class EngineSettingsDialog(QDialog):
         def _on_wheel():
             data = self.wheel.currentData()
             # WHEEL_PROFILES teeth/missing from item text not available — use constants
-            from strix_v2.constants import WHEEL_PROFILES
+            from strix_one.constants import WHEEL_PROFILES
             for wid, name, teeth, miss in WHEEL_PROFILES:
                 if wid == data:
                     self.teeth.setValue(teeth)
@@ -915,7 +915,7 @@ class EngineSettingsDialog(QDialog):
             if self._rpm > 0:
                 QMessageBox.warning(self, "Trigger wizard", "Stop the engine (RPM must be 0).")
                 return
-            from strix_v2.dialogs import TriggerWizardDialog
+            from strix_one.dialogs import TriggerWizardDialog
             dlg = TriggerWizardDialog(self)
             dlg.exec()
         self.btn_trig_wiz.clicked.connect(_open_trig)
@@ -930,7 +930,7 @@ class EngineSettingsDialog(QDialog):
             if self._rpm > 0:
                 QMessageBox.warning(self, "Setup wizard", "Stop the engine (RPM must be 0).")
                 return
-            from strix_v2.dialogs import SetupWizardDialog
+            from strix_one.dialogs import SetupWizardDialog
             dlg = SetupWizardDialog(self._settings_ref, parent=self)
             if dlg.exec():
                 dlg.apply_to(self._settings_ref)
@@ -1244,7 +1244,7 @@ class EngineSettingsDialog(QDialog):
             settings["map_kpa_min"] = int(settings.get("map_kpa_min") or 0)
             settings["map_bins"] = make_map_bins(int(settings.get("map_kpa_max") or 240), settings["map_kpa_min"])
         elif settings["load_mode"] == "TPS":
-            from strix_v2.constants import make_tps_bins
+            from strix_one.constants import make_tps_bins
             settings["tps_bins"] = make_tps_bins()
         if hasattr(self, "eoi"):
             settings["eoi_btdc"] = int(self.eoi.value())

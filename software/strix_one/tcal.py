@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from strix_v2.constants import TCAL_VERSION, ROWS, COLS, make_map_bins, make_tps_bins
+from strix_one.constants import TCAL_VERSION, ROWS, COLS, make_map_bins, make_tps_bins
 
 
 def default_engine_settings() -> dict[str, Any]:

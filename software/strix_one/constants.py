@@ -20,6 +20,21 @@ INJ_MIN, INJ_MAX = 0.0, 20.0
 RPM_BINS = [500 + c * 500 for c in range(COLS)]
 
 SETTINGS_FILE = "strix_one_settings.json"
+DEVICE_ID_FILE = "device_id.json"
+TCAL_VERSION = 1
+
+# Live strip fields that are always shown
+ALWAYS_STRIP = ["rpm", "tps", "baro", "ect", "iat", "sync", "pw"]
+
+# Trigger wheel profiles (single-cylinder set)
+WHEEL_PROFILES = {
+    0: {"name": "12-1", "teeth": 12, "missing": 1},
+    1: {"name": "Single Tooth", "teeth": 1, "missing": 0},
+    2: {"name": "36-1", "teeth": 36, "missing": 1},
+    3: {"name": "24-1", "teeth": 24, "missing": 1},
+    4: {"name": "24-2", "teeth": 24, "missing": 2},
+}
+
 
 def make_tps_bins() -> list[int]:
     """TPS load axis 0…100 % (Alpha-N)."""

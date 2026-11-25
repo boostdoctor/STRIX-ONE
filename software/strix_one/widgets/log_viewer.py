@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QListWidget, QListWidgetItem, QSlider, QSizePolicy, QAbstractItemView,
 )
 
-from strix_v2.datalog import DEFAULT_FIELDS
+from strix_one.datalog import DEFAULT_FIELDS
 
 
 _PALETTE = (

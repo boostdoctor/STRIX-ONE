@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QWidget, QDoubleSpinBox, QFormLayout, QDialogButtonBox,
 )
 
-from strix_v2.widgets.curve import DEFAULT_CURVES, CurveCanvas
+from strix_one.widgets.curve import DEFAULT_CURVES, CurveCanvas
 
 
 STEPS_ECT = [-20, 0, 20, 40, 60, 80]

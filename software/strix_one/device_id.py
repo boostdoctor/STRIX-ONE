@@ -5,13 +5,13 @@ import json
 import uuid
 from pathlib import Path
 
-from strix_v2.constants import DEVICE_ID_FILE
+from strix_one.constants import DEVICE_ID_FILE
 
 _DEFAULT = {"device_id": "", "last_port": "", "ecu_uid": ""}
 
 
 def _path() -> Path:
-    return Path.home() / ".strix_v2" / DEVICE_ID_FILE
+    return Path.home() / ".strix_one" / DEVICE_ID_FILE
 
 
 def _read_raw() -> dict:

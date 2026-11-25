@@ -88,7 +88,7 @@ class LiveStrip(QFrame):
         outer.addWidget(self._alarm)
 
     def set_optional(self, keys: set[str] | list[str]):
-        from strix_v2.constants import ALWAYS_STRIP
+        from strix_one.constants import ALWAYS_STRIP
         self._optional_keys = set(keys)
         always = set(ALWAYS_STRIP)
         # VE / LOAD / INJ / IGN stay on the main strip
