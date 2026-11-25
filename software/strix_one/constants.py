@@ -25,7 +25,14 @@ TCAL_VERSION = 1
 
 # Live strip
 ALWAYS_STRIP = ["rpm", "tps", "baro", "ect", "iat", "sync", "pw"]
-OPTIONAL_STRIP = ["bat", "afr", "ign", "load", "tooth"]
+OPTIONAL_STRIP = [
+    ("ign", "IGN"),
+    ("pw", "INJ ms"),
+    ("bat", "BAT"),
+    ("afr", "AFR"),
+    ("sync", "SYNC"),
+]
+
 
 # Sensors (simplified for single-cylinder Alpha-N)
 MAP_SENSORS = [
@@ -53,14 +60,16 @@ FIRING_ORDERS_BY_CYL = {1: ["1"]}
 ALL_FIRING_ORDERS = ["1"]
 
 
-# Trigger wheel profiles (single-cylinder set)
-WHEEL_PROFILES = {
-    0: {"name": "12-1", "teeth": 12, "missing": 1},
-    1: {"name": "Single Tooth", "teeth": 1, "missing": 0},
-    2: {"name": "36-1", "teeth": 36, "missing": 1},
-    3: {"name": "24-1", "teeth": 24, "missing": 1},
-    4: {"name": "24-2", "teeth": 24, "missing": 2},
-}
+# Trigger wheel profiles (wid, name, teeth, missing)
+# Matches the format expected by dialogs.py
+WHEEL_PROFILES = [
+    (0, "12-1", 12, 1),          # default
+    (1, "Single Tooth", 1, 0),
+    (2, "36-1", 36, 1),
+    (3, "24-1", 24, 1),
+    (4, "24-2", 24, 2),
+]
+
 
 
 def make_tps_bins() -> list[int]:
